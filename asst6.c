@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdint.h>
 
-#include "heap.h"
+#include "some_heap.h"
 
 /*
 Assignment 5: integer minheap
@@ -16,14 +17,17 @@ unsigned long long rand_between(unsigned long long min,
 
 void test_heap(void) {
     heap_t *heap = heap_create(200);
-    for (heap_key_t ix = 0; ix < 20; ix++) {
+    for (heap_key_t ix = 0; ix < 10; ix++) {
         heap_key_t key = rand_between(0, 1000);
-        heap_insert(heap, key, (heap_value_t)key);
+        heap_value_t val;
+        val.as_int = key;
+        heap_insert(heap, key, val);
         heap_print(heap);
     }
+    //exit(0);
     for (int ix = 0; ix < 10; ix++) {
-        heap_key_t key = (heap_key_t)heap_remove_min(heap);
-        printf("Removed %llu\n", key);
+        heap_value_t heap_value = heap_remove_min(heap);
+        printf("Removed %llu\n", heap_value.as_int);
         heap_print(heap);
     }
     exit(0);
@@ -31,5 +35,9 @@ void test_heap(void) {
 int main(int argc, char *argv[]) {
     srand(time(NULL));
 
+    FILE *file = freopen("output.txt", "w", stdout);
+
     test_heap();
+
+    fclose(file);
 }
