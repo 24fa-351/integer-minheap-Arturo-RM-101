@@ -52,7 +52,10 @@ void heap_swap(heap_t *heap, int index1, int index2) {
 void heap_bubble_up(heap_t *heap, int index) {
     while (index > heap->size) {
         int parent = heap_parent(index);
-        if (heap->data[parent].key > heap->data[index].key) {
+        if (heap->data[parent].key < heap->data[index].key) {
+            // Print out values from this function for debugging
+            //printf(heap);
+            printf("Going to swap %u and %u", parent, index);
             heap_swap(heap, parent, index);
             index = parent;
         } else {
@@ -85,10 +88,10 @@ void heap_insert(heap_t *heap, heap_key_t key, heap_value_t data) {
         return;
     }
 
+    // Add the new element to the end of the heap
     heap->data[heap_size(heap)].key = key;
     heap->data[heap_size(heap)].value = data;
     heap->size++;
-
     heap_bubble_up(heap, heap_size(heap) - 1);
 }
 
@@ -110,4 +113,3 @@ heap_value_t heap_remove_min(heap_t *heap) {
 
     return min;
 }
-
